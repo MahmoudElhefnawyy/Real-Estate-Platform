@@ -29,7 +29,7 @@ Live Demo: [https://akaary.netlify.app/properties](https://akaary.netlify.app/pr
 - **Icons**: Font Awesome 6
 - **Hosting**: Netlify
 - **Forms**: Formspree (for contact forms)
-
+```
 ├── index.html                   # Homepage
 ├── properties.html              # Property listings page
 ├── property-details.html        # Single property view
@@ -50,7 +50,7 @@ Live Demo: [https://akaary.netlify.app/properties](https://akaary.netlify.app/pr
 │   ├── logo.png                 # Website logo
 │   └── hero-banner.jpg          # Main banner
 └── README.md                    # Project documentation
-
+```
 
 ## 🚀 How to Use
 
