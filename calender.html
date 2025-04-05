@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حجز موعد - موقع AMAR التابع لسابك</title>
+    <!-- Bootstrap 5 RTL CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Flatpickr Calendar -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="assets/css/index.css">
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="vendor/bootstrap/css/footer.css">
+    <link rel="stylesheet" href="assets/css/fontawesome.css">
+    <link rel="stylesheet" href="assets/css/index.css">
+    <link rel="stylesheet" href="assets/css/owl.css">
+    <link rel="stylesheet" href="assets/css/animate.css">
+    <link rel="stylesheet"href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
+    <style>
+        :root {
+            --sabic-green:blue;
+            --sabic-dark: rgb(0, 38, 255);
+            --sabic-light: #E5F2EA;
+        }
+        
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: #f8f9fa;
+        }
+        
+        .sabic-header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 1rem 0;
+        }
+        
+        .booking-container {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0, 126, 58, 0.1);
+            overflow: hidden;
+        }
+        
+        .calendar-section {
+            background-color: var(--sabic-light);
+            padding: 2rem;
+        }
+        
+        .form-section {
+            padding: 2rem;
+        }
+        
+        .btn-sabic {
+            background-color: var(--sabic-green);
+            color: white;
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+        }
+        
+        .btn-sabic:hover {
+            background-color: var(--sabic-dark);
+            color: white;
+        }
+        
+        .time-slot {
+            border: 2px solid var(--sabic-light);
+            border-radius: 8px;
+            padding: 0.75rem;
+            margin-bottom: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .time-slot:hover, .time-slot.selected {
+            background-color: var(--sabic-green);
+            color: white;
+            border-color: var(--sabic-green);
+        }
+        
+        .flatpickr-calendar {
+            font-family: 'Tajawal', sans-serif;
+        }
+        
+        @media (min-width: 992px) {
+            .booking-container {
+                min-height: 600px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header-area header-sticky text-bold">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="main-nav">
+                        <!-- ***** Logo Start ***** -->
+                        <a href="index.html" class="logo" style="margin-left: 250px;font-weight: 700;">
+                            <h1>عقار</h1>
+                        </a>  
+                        <!-- ***** Logo End ***** -->
+                        <!-- ***** Menu Start ***** -->
+                        <ul class="nav" style="font-weight: 500;">
+                          <li><a href="index.html" class="active" style="margin-left: 50px;">الرئيسية</a></li>
+                          <li><a href="properties.html" style="margin-left: 50px;">العقارات</a></li>
+                          <li><a href="property-details.html" style="margin-left: 50px;">تفاصيل العقار</a></li>
+                          <li><a href="contact.html" style="margin-left: 150px;">اتصل بنا</a></li>
+                          <li><a href="calender.html"><i class="fa fa-calendar" style="margin-left: 50px;"></i> جدولة زيارة</a></li>
+                      </ul>   
+                        <a class='menu-trigger'>
+                            <span style="margin-left: 50px;">القائمة</span>
+                        </a>
+                        <!-- ***** Menu End ***** -->
+                    </nav>
+                </div>
+            </div>
+        </div>
+      </header>
+
+    <!-- Main Content -->
+    <div class="container my-5">
+        <div class="booking-container">
+            <div class="row g-0">
+                <!-- Calendar Section -->
+                <div class="col-lg-7 calendar-section">
+                    <div class="text-center mb-4">
+                        <h3 class="text-sabic-dark">اختر تاريخ ووقت الحجز</h3>
+                        <p class="text-muted">حدد الموعد المناسب لك لزيارة منشآت سابك</p>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <input type="text" id="bookingDate" class="form-control form-control-lg text-center" placeholder="اختر التاريخ">
+                    </div>
+                    
+                    <div class="time-slots-container">
+                        <h5 class="mb-3">الأوقات المتاحة</h5>
+                        <div class="row" id="timeSlots">
+                            <!-- Time slots will be generated here -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Form Section -->
+                <div class="col-lg-5 form-section">
+                    <div class="mb-4">
+                        <h3 class="text-sabic-dark">تفاصيل الحجز</h3>
+                        <p class="text-muted">املأ المعلومات التالية لإكمال الحجز</p>
+                    </div>
+                    
+                    <form id="bookingForm">
+                        <div class="mb-3">
+                            <label for="fullName" class="form-label">الاسم الكامل</label>
+                            <input type="text" class="form-control" id="fullName" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="company" class="form-label">الشركة</label>
+                            <input type="text" class="form-control" id="company" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="email" class="form-label">البريد الإلكتروني</label>
+                            <input type="email" class="form-control" id="email" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">رقم الجوال</label>
+                            <input type="tel" class="form-control" id="phone" required>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="notes" class="form-label">ملاحظات إضافية</label>
+                            <textarea class="form-control" id="notes" rows="3"></textarea>
+                        </div>
+                        
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-sabic btn-lg">
+                                <i class="fas fa-calendar-check me-2"></i> تأكيد الحجز
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white pt-5 pb-4">
+        <div class="container">
+          <div class="row">
+            <!-- Company Info -->
+            <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
+              <h5 class="text-uppercase mb-4 text-white text-bold">عقار للبناء والتعمير
+            شركة رائدة في مجال العقارات والبناء في المملكة العربية السعودية، نقدم حلولاً متكاملة لجميع احتياجاتك العقارية.</h5>
+              <div class="mt-4">
+                <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="text-white me-3"><i class="fab fa-linkedin-in"></i></a>
+              </div>
+            </div>
+      
+            <!-- Quick Links -->
+            <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
+              <h5 class="text-uppercase mb-4 text-bold text-white">روابط سريعة</h5>
+              <ul class="list-unstyled">
+                <li class="mb-2"><a href="#" class="text-white">الرئيسية</a></li>
+                <li class="mb-2"><a href="#" class="text-white">من نحن</a></li>
+                <li class="mb-2"><a href="#" class="text-white">خدماتنا</a></li>
+                <li class="mb-2"><a href="#" class="text-white">المشاريع</a></li>
+                <li class="mb-2"><a href="#" class="text-white">اتصل بنا</a></li>
+              </ul>
+            </div>
+      
+            <!-- Services -->
+            <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+              <h5 class="text-uppercase mb-4 text-white text-bold">خدماتنا</h5>
+              <ul class="list-unstyled">
+                <li class="mb-2"><i class="fas fa-home me-2"></i> بناء وتشييد الفلل</li>
+                <li class="mb-2"><i class="fas fa-building me-2"></i> المشاريع التجارية</li>
+                <li class="mb-2"><i class="fas fa-paint-roller me-2"></i> التصميم الداخلي</li>
+                <li class="mb-2"><i class="fas fa-key me-2"></i> إدارة الممتلكات</li>
+                <li class="mb-2"><i class="fas fa-search-dollar me-2"></i> الاستشارات العقارية</li>
+              </ul>
+            </div>
+      
+            <!-- Contact Info -->
+            <div class="col-lg-3 col-md-6">
+              <h5 class="text-uppercase mb-4 text-white text-bold">تواصل معنا</h5>
+              <ul class="list-unstyled">
+                <li class="mb-3">
+                  <i class="fas fa-map-marker-alt me-3"></i>
+                  الرياض، المملكة العربية السعودية
+                </li>
+                <li class="mb-3">
+                  <i class="fas fa-phone me-3"></i>
+                  +966 12 345 6789
+                </li>
+                <li class="mb-3">
+                  <i class="fas fa-envelope me-3"></i>
+                  info@aqar.com
+                </li>
+                <li class="mb-3">
+                  <i class="fas fa-clock me-3"></i>
+                  الأحد - الخميس: 8 ص - 5 م
+                </li>
+              </ul>
+            </div>
+          </div>
+      
+          <hr class="my-4 bg-light">
+      
+          <!-- Copyright -->
+          <div class="row align-items-center">
+            <div class="col-md-6 text-center text-md-start">
+              <p class="mb-0">&copy; 2023 عقار للبناء والتعمير. جميع الحقوق محفوظة.</p>
+            </div>
+            <div class="col-md-6 text-center text-md-end">
+              <ul class="list-inline mb-0">
+                <li class="list-inline-item"><a href="#" class="text-white">شروط الاستخدام</a></li>
+                <li class="list-inline-item"><span class="mx-2">|</span></li>
+                <li class="list-inline-item"><a href="#" class="text-white">سياسة الخصوصية</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </footer>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ar.js"></script>
+    
+    <script>
+        // Initialize Arabic calendar
+        flatpickr("#bookingDate", {
+            locale: "ar",
+            minDate: "today",
+            dateFormat: "Y-m-d",
+            disable: [
+                function(date) {
+                    // Disable Fridays and Saturdays
+                    return (date.getDay() === 5 || date.getDay() === 6);
+                }
+            ],
+            onChange: function(selectedDates, dateStr, instance) {
+                generateTimeSlots(dateStr);
+            }
+        });
+
+        // Generate time slots
+        function generateTimeSlots(date) {
+            const timeSlotsContainer = document.getElementById('timeSlots');
+            timeSlotsContainer.innerHTML = '';
+            
+            // Sample time slots (in a real app, these would come from an API)
+            const times = ['08:00 ص', '09:30 ص', '11:00 ص', '01:00 م', '02:30 م', '04:00 م'];
+            
+            times.forEach(time => {
+                const col = document.createElement('div');
+                col.className = 'col-md-6';
+                
+                const slot = document.createElement('div');
+                slot.className = 'time-slot text-center';
+                slot.textContent = time;
+                
+                slot.addEventListener('click', function() {
+                    document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('selected'));
+                    this.classList.add('selected');
+                    document.getElementById('selectedTime').value = time;
+                });
+                
+                col.appendChild(slot);
+                timeSlotsContainer.appendChild(col);
+            });
+        }
+
+        // Form submission
+        document.getElementById('bookingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Here you would typically send the data to your backend
+            alert('تم حجز الموعد بنجاح! سنقوم بتأكيد الحجز عبر البريد الإلكتروني.');
+            this.reset();
+        });
+    </script>
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/isotope.min.js"></script>
+    <script src="assets/js/owl-carousel.js"></script>
+    <script src="assets/js/counter.js"></script>
+    <script src="assets/js/custom.js"></script>
+</body>
+</html>
