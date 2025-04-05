@@ -1,7 +1,5 @@
 # Aqar Real Estate Website 🏠
 
-![Aqar Website Screenshot](https://akaary.netlify.app/images/screenshot.jpg)
-
 A responsive real estate website built with Bootstrap 5.  
 Live Demo: [https://akaary.netlify.app/properties](https://akaary.netlify.app/properties)
 
